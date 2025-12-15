@@ -5,7 +5,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
     email = models.EmailField()
-    password = models.CharField(max_length=15)
+    password = models.CharField(max_length=255)
 
     #to save the data
     def register(self):
