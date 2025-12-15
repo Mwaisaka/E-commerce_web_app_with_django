@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+        .login-container {
+            width: 350px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .login-container h2 {
+            text-align: center;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background: #0d6efd;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Customer Login</h2>
+
+    <!-- ERROR MESSAGE -->
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <!-- LOGIN FORM -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- preserve return_url -->
+        {% if request.GET.return_url %}
+            <input type="hidden" name="return_url" value="{{ request.GET.return_url }}">
+        {% endif %}
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit">Login</button>
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My E-Shop</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #eee;">
+    <h2>My E-Shop</h2>
+
+    <div>
+        {% if request.session.customer %}
+            <a href="{% url 'logout' %}" style="margin-right: 15px;">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" style="margin-right: 15px;">Login</a>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+
+<!-- ================= CATEGORIES ================= -->
+<div style="margin-bottom: 20px;">
+    <h3>Categories</h3>
+    <ul>
+        <li>
+            <a href="/">All Products</a>
+        </li>
+        {% for category in categories %}
+            <li>
+                <a href="/?category={{ category.id }}">
+                    {{ category.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<!-- ================= PRODUCTS ================= -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+    {% for product in products %}
+        <div style="border: 1px solid #ccc; padding: 10px;">
+            
+            <h4>{{ product.name }}</h4>
+            <p>Price: {{ product.price }}</p>
+
+            <!-- ADD TO CART -->
+            <form method="POST" action="{% url 'cart' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product" value="{{ product.id }}">
+                <button type="submit">Add to Cart</button>
+            </form>
+
+            <!-- REMOVE FROM CART -->
+            <form method="POST" action="{% url 'cart' %}" style="margin-top: 5px;">
+                {% csrf_token %}
+                <input type="hidden" name="product" value="{{ product.id }}">
+                <input type="hidden" name="remove" value="true">
+                <button type="submit">Remove</button>
+            </form>
+
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
